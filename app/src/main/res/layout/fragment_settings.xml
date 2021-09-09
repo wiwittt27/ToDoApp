@@ -27,7 +27,8 @@
       app:layout_constraintStart_toStartOf="@id/tv_setting"
       app:layout_constraintEnd_toEndOf="@id/tv_setting"
       app:layout_constraintBottom_toBottomOf="parent"
-      android:text="Logout"
+      android:text="Sign Out"
+      android:textAllCaps="false"
       android:backgroundTint="@color/redText"
 
     />
