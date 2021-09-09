@@ -52,7 +52,7 @@ class TaskAdapter(private val activity: Activity) : PagedListAdapter<Task, TaskA
 
 
                 tvItemStatus.setOnClickListener {
-                    Toast.makeText(activity,"Ini ${task.title}",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity,"Status:  ${task.status}",Toast.LENGTH_SHORT).show()
                 }
 
 
