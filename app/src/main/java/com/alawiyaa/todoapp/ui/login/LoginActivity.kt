@@ -49,8 +49,6 @@ class LoginActivity : AppCompatActivity(){
     }
 
     private fun updateUI(account: GoogleSignInAccount?) {
-    binding?.tvSignIn?.text = account?.displayName
-
         val acct = GoogleSignIn.getLastSignedInAccount(this)
         if (acct != null) {
             Toast.makeText(this,"Welcome ${account?.displayName}",Toast.LENGTH_SHORT).show()
