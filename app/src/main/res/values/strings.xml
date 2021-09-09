@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ToDo App</string>
     <string name="text_username">Hallo, Imam!</string>
+    <string name="text_hallo">Hallo, %1s!</string>
     <string name="text_task">2 Task for Today</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

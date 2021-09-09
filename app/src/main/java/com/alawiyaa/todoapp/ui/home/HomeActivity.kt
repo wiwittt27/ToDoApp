@@ -46,7 +46,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     private fun updateUI(account: GoogleSignInAccount?) {
         val acct = GoogleSignIn.getLastSignedInAccount(this)
         if (acct != null) {
-            binding?.tvName?.text = acct.givenName
+            binding?.tvName?.text = "Hallo, ${acct.givenName}!"
             binding?.imgUser?.let { Glide.with(this).load(acct.photoUrl).into(it) }
         }
     }
