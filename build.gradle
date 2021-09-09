@@ -1,6 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.4.32"
+    ext.kotlin_version = "1.4.30"
+    ext{
+        lottie_version = "3.4.1"
+        recyclerViewVersion = '1.2.0'
+        spinkit_version = '1.4.0'
+
+        roomVersion = '2.2.3'
+        roomRuntimeVersion = '2.3.0'
+
+        pagingVersion = '2.1.2'
+    }
     repositories {
         google()
         jcenter()

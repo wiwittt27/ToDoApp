@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_task">
+
+    <fragment
+        android:id="@+id/navigation_task"
+        android:name="com.alawiyaa.todoapp.ui.task.TaskFragment"
+        tools:layout="@layout/fragment_task" />
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.alawiyaa.todoapp.ui.settings.SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
