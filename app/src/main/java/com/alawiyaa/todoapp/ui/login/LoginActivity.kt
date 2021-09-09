@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.alawiyaa.todoapp.databinding.ActivityLoginBinding
+import com.alawiyaa.todoapp.ui.home.HomeActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -24,6 +25,7 @@ class LoginActivity : AppCompatActivity(){
     companion object {
         const val RC_SIGN_IN = 123
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +53,7 @@ class LoginActivity : AppCompatActivity(){
 
         val acct = GoogleSignIn.getLastSignedInAccount(this)
         if (acct != null) {
-            binding?.tvSignIn?.text = acct?.displayName
+            Toast.makeText(this,"Welcome ${account?.displayName}",Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -71,10 +73,7 @@ class LoginActivity : AppCompatActivity(){
             val account: GoogleSignInAccount? = task?.getResult(ApiException::class.java)
 
             // Signed in successfully, show authenticated UI.
-            if (task?.isSuccessful == true){
-                updateUI(account)
-              Toast.makeText(this, "Login Sukses ${account?.displayName}", Toast.LENGTH_SHORT).show()
-            }
+           startActivity(Intent(this@LoginActivity,HomeActivity::class.java))
 
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.

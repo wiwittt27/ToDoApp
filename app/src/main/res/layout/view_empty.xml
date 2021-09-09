@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-       android:background="@color/black"/>
+       android:background="@drawable/ic_settings"/>
 
     <TextView
         android:id="@+id/tv_empty"

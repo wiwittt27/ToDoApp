@@ -13,6 +13,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.alawiyaa.todoapp.R
 import com.alawiyaa.todoapp.databinding.ActivityHomeBinding
 import com.alawiyaa.todoapp.ui.task.add.AddTaskActivity
+import com.bumptech.glide.Glide
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity(), View.OnClickListener {
@@ -26,6 +30,10 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding?.root)
         binding?.botNav?.menu?.getItem(1)?.isEnabled = false
 
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        updateUI(account)
+        
+
         setSupportActionBar(binding?.toolBar);
         supportActionBar?.setDisplayShowTitleEnabled(false);
         //toolbar.setNavigationIcon(R.drawable.ic_toolbar);
@@ -33,6 +41,14 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
         setupBottomNavigationView()
         binding?.fabAdd?.setOnClickListener(this)
+    }
+
+    private fun updateUI(account: GoogleSignInAccount?) {
+        val acct = GoogleSignIn.getLastSignedInAccount(this)
+        if (acct != null) {
+            binding?.tvName?.text = acct.givenName
+            binding?.imgUser?.let { Glide.with(this).load(acct.photoUrl).into(it) }
+        }
     }
 
     private fun setupBottomNavigationView() {
