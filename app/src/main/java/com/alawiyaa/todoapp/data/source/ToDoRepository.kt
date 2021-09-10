@@ -48,6 +48,12 @@ class ToDoRepository private constructor(private val localDataSource: LocalDataS
         return LivePagedListBuilder(localDataSource.getListTask(), config).build()
     }
 
+    override fun getCountTask( ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            localDataSource.getCountTask()
+        }
+
+    }
 
 
 }

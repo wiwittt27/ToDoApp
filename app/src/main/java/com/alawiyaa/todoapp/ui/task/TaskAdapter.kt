@@ -46,7 +46,9 @@ class TaskAdapter(private val activity: Activity) : PagedListAdapter<Task, TaskA
             with(binding) {
                 tvItemTime.text = task.startTime
                 tvItemTitle.text = task.title
-                tvItemStatus.text = task.status
+                tvItemStatus.text = "Complete"
+                tvStart.text    = task.startTime
+                tvEnd.text = task.endTime
 
 
 

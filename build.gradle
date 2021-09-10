@@ -2,7 +2,7 @@
 buildscript {
     ext.kotlin_version = "1.4.30"
     ext{
-        lottie_version = "3.4.1"
+        lottie_version = "4.1.0"
         recyclerViewVersion = '1.2.0'
         spinkit_version = '1.4.0'
 

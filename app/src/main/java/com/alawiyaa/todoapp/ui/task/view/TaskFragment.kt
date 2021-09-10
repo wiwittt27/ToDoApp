@@ -1,13 +1,16 @@
 package com.alawiyaa.todoapp.ui.task.view
 
+import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alawiyaa.todoapp.R
@@ -22,11 +25,10 @@ import com.michalsvec.singlerowcalendar.utils.DateUtils
 import java.util.*
 
 
-
 class TaskFragment : Fragment() {
-    private var _binding : FragmentTaskBinding?=null
+    private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding
-    private lateinit var mainViewModel : TaskViewModel
+    private lateinit  var mainViewModel: TaskViewModel
 
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
@@ -37,25 +39,47 @@ class TaskFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentTaskBinding.inflate(inflater,container,false)
+        _binding = FragmentTaskBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (activity != null) {
+            Log.d("PAUSE", "View Created")
+            adapter = TaskAdapter(requireActivity())
+            val factory = ToDoViewModelFactory.getInstance(requireActivity())
+            mainViewModel = ViewModelProvider(this, factory)[TaskViewModel::class.java]
+            mainViewModel.getAllTask().observe(viewLifecycleOwner, { listTask ->
+                if (listTask != null && listTask.size > 0) {
+                    adapter.submitList(listTask)
+                    binding?.viewData?.root?.visibility = View.GONE
+                    binding?.cardRv?.visibility = View.VISIBLE
+                }
+            })
+        }
+
+            with(binding?.rvTask) {
+                this?.layoutManager = LinearLayoutManager(context)
+                this?.setHasFixedSize(true)
+                this?.adapter = adapter
+            }
+            if (adapter.itemCount == 0) {
+                binding?.cardRv?.visibility = View.GONE
+                binding?.viewData?.root?.visibility = View.VISIBLE
+
+            }
+
         // set current date to calendar and current month to currentMonth variable
         calendar.time = Date()
         currentMonth = calendar[Calendar.MONTH]
-        binding?.tvDate?.text = "${DateUtils.getMonthName(calendar.time)}, ${DateUtils.getDayNumber(calendar.time)} "
+        binding?.tvDate?.text =
+            "${DateUtils.getMonthName(calendar.time)}, ${DateUtils.getDayNumber(calendar.time)} "
         binding?.tvDay?.text = DateUtils.getDayName(calendar.time)
 
 
-        // enable white status bar with black icons
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-         activity?.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            activity?.window?.statusBarColor = Color.WHITE
-        }
+
 
         // calendar view manager is responsible for our displaying logic
         val myCalendarViewManager = object :
@@ -103,17 +127,17 @@ class TaskFragment : Fragment() {
                 bb?.text = DateUtils.getDay3LettersName(date)
 
 
-
             }
 
-            }
+        }
 
         // using calendar changes observer we can track changes in calendar
         val myCalendarChangesObserver = object :
             CalendarChangesObserver {
             // you can override more methods, in this example we need only this one
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-                binding?.tvDate?.text = "${DateUtils.getMonthName(date)}, ${DateUtils.getDayNumber(date)} "
+                binding?.tvDate?.text =
+                    "${DateUtils.getMonthName(date)}, ${DateUtils.getDayNumber(date)} "
                 binding?.tvDay?.text = DateUtils.getDayName(date)
                 super.whenSelectionChanged(isSelected, position, date)
             }
@@ -135,8 +159,6 @@ class TaskFragment : Fragment() {
         }
 
 
-
-
         // here we init our calendar, also you can set more properties if you haven't specified in XML layout
         val singleRowCalendar = binding?.mainSingleRowCalendar?.apply {
             calendarViewManager = myCalendarViewManager
@@ -146,47 +168,47 @@ class TaskFragment : Fragment() {
             init()
         }
 
-       binding?.btnRight?.setOnClickListener {
+        binding?.btnRight?.setOnClickListener {
             singleRowCalendar?.setDates(getDatesOfNextMonth())
         }
 
         binding?.btnLeft?.setOnClickListener {
             singleRowCalendar?.setDates(getDatesOfPreviousMonth())
         }
-        if (activity != null) {
-            adapter = TaskAdapter(requireActivity())
-            val factory = ToDoViewModelFactory.getInstance(requireActivity())
-            mainViewModel = ViewModelProvider(this, factory)[TaskViewModel::class.java]
-
-            mainViewModel.getAllTask().observe(viewLifecycleOwner, { listTask ->
-                if (listTask != null && listTask.size > 0) {
-                    adapter.submitList(listTask)
-                    binding?.viewData?.root?.visibility = View.GONE
-                }
-            })
 
 
-            with(binding?.rvTask) {
-                this?.layoutManager = LinearLayoutManager(context)
-                this?.setHasFixedSize(true)
-                this?.adapter = adapter
-            }
-            if (adapter.itemCount == 0) {
-                binding?.viewData?.root?.visibility = View.VISIBLE
-            }
-        }
+
+    }
+     fun showBookmark() {
+         mainViewModel.getAllTask().observe(viewLifecycleOwner, { listTask ->
+             if (listTask != null && listTask.size > 0) {
+                 adapter.submitList(listTask)
+                 binding?.viewData?.root?.visibility = View.GONE
+                 binding?.cardRv?.visibility = View.VISIBLE
+
+             }
+         })
     }
 
-    private fun showBookmark(){
-        mainViewModel.getAllTask().observe(viewLifecycleOwner, {listTask->
-            if (listTask != null && listTask.size > 0) {
-                adapter.submitList(listTask)
-                binding?.viewData?.root?.visibility = View.GONE
-
-
-            }
-        })
+    override fun onPause() {
+        super.onPause()
+        showBookmark()
+        Log.d("PAUSE","Pause")
     }
+
+    override fun onStart() {
+        super.onStart()
+        showBookmark()
+        Log.d("PAUSE","Start")
+    }
+
+    override fun onResume() {
+
+        super.onResume()
+        showBookmark()
+        Log.d("PAUSE","Resume")
+    }
+
 
 
 
