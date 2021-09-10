@@ -1,4 +1,4 @@
-package com.alawiyaa.todoapp.ui.task
+package com.alawiyaa.todoapp.ui.task.view
 
 import android.graphics.Color
 import android.os.Build
@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alawiyaa.todoapp.R
 import com.alawiyaa.todoapp.databinding.FragmentTaskBinding
+import com.alawiyaa.todoapp.ui.task.TaskAdapter
 import com.alawiyaa.todoapp.viewmodel.ToDoViewModelFactory
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
@@ -25,7 +26,7 @@ import java.util.*
 class TaskFragment : Fragment() {
     private var _binding : FragmentTaskBinding?=null
     private val binding get() = _binding
-    private lateinit var mainViewModel :TaskViewModel
+    private lateinit var mainViewModel : TaskViewModel
 
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0

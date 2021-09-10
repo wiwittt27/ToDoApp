@@ -13,5 +13,7 @@
     <string name="status">Complete</string>
     <string name="delete">Delete</string>
     <string name="no_data">Empty Task</string>
+    <string name="update_task">Update Task</string>
+    <string name="delete_task">Delete Task</string>
 
 </resources>

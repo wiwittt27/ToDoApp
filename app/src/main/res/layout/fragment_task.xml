@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:paddingTop="118dp"
-    tools:context=".ui.task.TaskFragment">
+    tools:context=".ui.task.view.TaskFragment">
 
     <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
         android:id="@+id/main_single_row_calendar"

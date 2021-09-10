@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.alawiyaa.todoapp.data.source.ToDoRepository
 import com.alawiyaa.todoapp.di.Injection
-import com.alawiyaa.todoapp.ui.task.TaskViewModel
+import com.alawiyaa.todoapp.ui.task.view.TaskViewModel
 import com.alawiyaa.todoapp.ui.task.add.AddTaskViewModel
+import com.alawiyaa.todoapp.ui.task.dell.DeleteUpdateViewModel
 
 class ToDoViewModelFactory private constructor(private val mTodoRepository: ToDoRepository) :  ViewModelProvider.NewInstanceFactory(){
     companion object {
@@ -30,6 +31,10 @@ class ToDoViewModelFactory private constructor(private val mTodoRepository: ToDo
             modelClass.isAssignableFrom(TaskViewModel::class.java) -> {
                 TaskViewModel(mTodoRepository) as T
             }
+            modelClass.isAssignableFrom(DeleteUpdateViewModel::class.java) -> {
+                DeleteUpdateViewModel(mTodoRepository) as T
+            }
+
 
 
 

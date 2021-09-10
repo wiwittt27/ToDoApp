@@ -27,6 +27,18 @@ class ToDoRepository private constructor(private val localDataSource: LocalDataS
         }
     }
 
+    override fun updateTask(task: Task) {
+        CoroutineScope(Dispatchers.IO).launch {
+            localDataSource.updateTask(task)
+        }
+    }
+
+    override fun deleteTask(task: Task) {
+        CoroutineScope(Dispatchers.IO).launch {
+            localDataSource.deleteTask(task)
+        }
+    }
+
     override fun getListTask(): LiveData<PagedList<Task>> {
         val config = PagedList.Config.Builder().apply {
             setEnablePlaceholders(false)
@@ -35,6 +47,7 @@ class ToDoRepository private constructor(private val localDataSource: LocalDataS
         }.build()
         return LivePagedListBuilder(localDataSource.getListTask(), config).build()
     }
+
 
 
 }

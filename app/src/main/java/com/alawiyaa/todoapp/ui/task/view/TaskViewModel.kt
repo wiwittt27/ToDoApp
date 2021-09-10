@@ -1,4 +1,4 @@
-package com.alawiyaa.todoapp.ui.task
+package com.alawiyaa.todoapp.ui.task.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

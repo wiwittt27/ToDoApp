@@ -13,6 +13,8 @@ class LocalDataSource constructor(private val mTaskDao: TaskDao) {
     }
 
      fun insertTask(task: Task) = mTaskDao.insertTask(task)
+     fun updateTask(task: Task) = mTaskDao.update(task)
+     fun deleteTask(task: Task) = mTaskDao.delete(task)
     fun getListTask() : DataSource.Factory<Int, Task> = mTaskDao.getListTask()
 
 

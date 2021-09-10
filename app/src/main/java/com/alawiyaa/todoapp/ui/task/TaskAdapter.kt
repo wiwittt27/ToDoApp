@@ -1,17 +1,16 @@
 package com.alawiyaa.todoapp.ui.task
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.graphics.Paint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alawiyaa.todoapp.data.source.local.entity.Task
 import com.alawiyaa.todoapp.databinding.ItemTaskBinding
-import com.alawiyaa.todoapp.util.STATUS_DONE
+import com.alawiyaa.todoapp.ui.task.dell.DeleteActivity
+import com.alawiyaa.todoapp.ui.task.dell.DeleteActivity.Companion.EXTRA_TASK
 
 class TaskAdapter(private val activity: Activity) : PagedListAdapter<Task, TaskAdapter.TaskViewHolder>(DIFF_CALLBACK){
 
@@ -45,14 +44,16 @@ class TaskAdapter(private val activity: Activity) : PagedListAdapter<Task, TaskA
         RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task) {
             with(binding) {
-                tvItemTime.text = task.day.toString()
+                tvItemTime.text = task.startTime
                 tvItemTitle.text = task.title
                 tvItemStatus.text = task.status
 
 
 
-                tvItemStatus.setOnClickListener {
-                    Toast.makeText(activity,"Status:  ${task.status}",Toast.LENGTH_SHORT).show()
+                layoutItem.setOnClickListener {
+                   val detail = Intent(activity,DeleteActivity::class.java)
+                    detail.putExtra(EXTRA_TASK,task)
+                    activity.startActivity(detail)
                 }
 
 
