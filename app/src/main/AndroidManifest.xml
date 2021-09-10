@@ -14,14 +14,14 @@
         <activity android:name=".ui.task.dell.DeleteActivity"></activity>
         <activity android:name=".ui.task.add.AddTaskActivity" />
         <activity android:name=".ui.login.LoginActivity" >
-
-        </activity>
-        <activity android:name=".ui.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.home.HomeActivity">
+
         </activity>
     </application>
 
