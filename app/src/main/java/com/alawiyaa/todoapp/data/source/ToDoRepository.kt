@@ -42,17 +42,24 @@ class ToDoRepository private constructor(private val localDataSource: LocalDataS
     override fun getListTask(): LiveData<PagedList<Task>> {
         val config = PagedList.Config.Builder().apply {
             setEnablePlaceholders(false)
-            setInitialLoadSizeHint(4)
-            setPageSize(4)
+            setInitialLoadSizeHint(10)
+            setPageSize(10)
         }.build()
         return LivePagedListBuilder(localDataSource.getListTask(), config).build()
     }
 
-    override fun getCountTask( ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            localDataSource.getCountTask()
-        }
+    override fun getCountTask(date: String ): LiveData<Int> {
+          return  localDataSource.getCountTask(date)
 
+    }
+
+    override fun getByDate(date: String): LiveData<PagedList<Task>> {
+        val config = PagedList.Config.Builder().apply {
+            setEnablePlaceholders(false)
+            setInitialLoadSizeHint(10)
+            setPageSize(10)
+        }.build()
+        return LivePagedListBuilder(localDataSource.getByDate(date), config).build()
     }
 
 

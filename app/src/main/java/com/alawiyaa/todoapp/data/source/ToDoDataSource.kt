@@ -11,7 +11,9 @@ interface ToDoDataSource {
     fun updateTask(task : Task)
     fun deleteTask(task : Task)
     fun getListTask() : LiveData<PagedList<Task>>
-    fun getCountTask()
+    fun getCountTask(date:String) : LiveData<Int>
+    fun getByDate(date :String) : LiveData<PagedList<Task>>
+
 
 
 }

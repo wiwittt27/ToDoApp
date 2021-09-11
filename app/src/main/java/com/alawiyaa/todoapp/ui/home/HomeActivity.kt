@@ -22,12 +22,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.michalsvec.singlerowcalendar.utils.DateUtils
+import java.util.*
 
 class HomeActivity : AppCompatActivity(), View.OnClickListener {
     private var _binding : ActivityHomeBinding? = null
     private val binding get() = _binding
     private lateinit var navController: NavController
     private lateinit var homeViewModel: HomeViewModel
+    var dateNow =""
+    private val calendar = Calendar.getInstance()
+
 
 
 
@@ -37,13 +42,18 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding?.root)
         binding?.botNav?.menu?.getItem(1)?.isEnabled = false
 
+        calendar.time = Date()
+        dateNow = "${DateUtils.getYear(calendar.time)}/${DateUtils.getMonthNumber(calendar.time)}/${DateUtils.getDayNumber(calendar.time)}"
+
         val factory = ToDoViewModelFactory.getInstance(this)
         homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+        homeViewModel.getCountTask(dateNow).observe(this,{
+        binding?.tvTask?.text = "$it Task for Today"
+        })
 
         val account = GoogleSignIn.getLastSignedInAccount(this)
         updateUI(account)
 
-       val unit = homeViewModel.getCountTask()
         setSupportActionBar(binding?.toolBar);
         supportActionBar?.setDisplayShowTitleEnabled(false);
         //toolbar.setNavigationIcon(R.drawable.ic_toolbar);
@@ -51,8 +61,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
         setupBottomNavigationView()
         binding?.fabAdd?.setOnClickListener(this)
-//        binding?.tvTask?.text = "$count Task Today"
-        Toast.makeText(this,"Active : $unit",Toast.LENGTH_LONG).show()
 
     }
 

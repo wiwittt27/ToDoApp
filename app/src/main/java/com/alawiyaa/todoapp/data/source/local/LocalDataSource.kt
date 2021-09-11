@@ -1,5 +1,6 @@
 package com.alawiyaa.todoapp.data.source.local
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.alawiyaa.todoapp.data.source.local.entity.Task
 import com.alawiyaa.todoapp.data.source.local.room.TaskDao
@@ -16,7 +17,9 @@ class LocalDataSource constructor(private val mTaskDao: TaskDao) {
      fun updateTask(task: Task) = mTaskDao.update(task)
      fun deleteTask(task: Task) = mTaskDao.delete(task)
     fun getListTask() : DataSource.Factory<Int, Task> = mTaskDao.getListTask()
-    fun getCountTask( )  = mTaskDao.getStatusTasksCount()
+    fun getCountTask( date: String) : LiveData<Int>  = mTaskDao.getStatusTasksCount(date)
+    fun getByDate(date : String) : DataSource.Factory<Int, Task> = mTaskDao.getListDate(date)
+
 
 
 }

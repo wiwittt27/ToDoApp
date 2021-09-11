@@ -2,15 +2,20 @@ package com.alawiyaa.todoapp.ui.task
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.alawiyaa.todoapp.R
 import com.alawiyaa.todoapp.data.source.local.entity.Task
 import com.alawiyaa.todoapp.databinding.ItemTaskBinding
 import com.alawiyaa.todoapp.ui.task.dell.DeleteActivity
 import com.alawiyaa.todoapp.ui.task.dell.DeleteActivity.Companion.EXTRA_TASK
+import com.alawiyaa.todoapp.util.STATUS_DONE
 
 class TaskAdapter(private val activity: Activity) : PagedListAdapter<Task, TaskAdapter.TaskViewHolder>(DIFF_CALLBACK){
 
@@ -50,6 +55,13 @@ class TaskAdapter(private val activity: Activity) : PagedListAdapter<Task, TaskA
                 tvStart.text    = task.startTime
                 tvEnd.text = task.endTime
 
+                if (task.status == STATUS_DONE) {
+                    tvItemStatus.setBackgroundResource(R.drawable.bg_item_desc)
+                    tvItemStatus.setTextColor(Color.GRAY)
+                }else{
+                    tvItemStatus.setBackgroundResource(R.drawable.bg_item_desc);
+                    tvItemStatus.setTextColor(Color.RED)
+                }
 
 
                 layoutItem.setOnClickListener {

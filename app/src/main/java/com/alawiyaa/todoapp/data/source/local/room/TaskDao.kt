@@ -12,7 +12,7 @@ interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun insertTask(task: Task)
 
-    @Query("SELECT * FROM tasks ORDER BY status DESC")
+    @Query("SELECT * FROM tasks ORDER BY status ASC")
     fun getListTask() : DataSource.Factory<Int, Task>
 
     @Update
@@ -20,6 +20,10 @@ interface TaskDao {
     @Delete
     fun delete(note: Task)
 
-    @Query("SELECT COUNT(*)  FROM tasks WHERE status = 1 ")
-    fun getStatusTasksCount() : Int
+    @Query("SELECT COUNT(status)  FROM tasks WHERE status = 0 AND date = :date ")
+    fun getStatusTasksCount(date: String) : LiveData<Int>
+
+    @Query("SELECT * FROM tasks WHERE date = :date ORDER BY status ASC")
+    fun getListDate(date :String) : DataSource.Factory<Int, Task>
+
 }

@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +34,7 @@ class TaskFragment : Fragment() {
 
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
+    private var dateNow =""
     private lateinit var adapter: TaskAdapter
 
 
@@ -47,11 +50,17 @@ class TaskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
+            calendar.time = Date()
+            currentMonth = calendar[Calendar.MONTH]
+            binding?.tvDate?.text =
+                "${DateUtils.getMonthName(calendar.time)}, ${DateUtils.getDayNumber(calendar.time)} "
+            binding?.tvDay?.text = DateUtils.getDayName(calendar.time)
+            dateNow = "${DateUtils.getYear(calendar.time)}/${DateUtils.getMonthNumber(calendar.time)}/${DateUtils.getDayNumber(calendar.time)}"
             Log.d("PAUSE", "View Created")
             adapter = TaskAdapter(requireActivity())
             val factory = ToDoViewModelFactory.getInstance(requireActivity())
             mainViewModel = ViewModelProvider(this, factory)[TaskViewModel::class.java]
-            mainViewModel.getAllTask().observe(viewLifecycleOwner, { listTask ->
+            mainViewModel.getByDate(dateNow).observe(viewLifecycleOwner, { listTask ->
                 if (listTask != null && listTask.size > 0) {
                     adapter.submitList(listTask)
                     binding?.viewData?.root?.visibility = View.GONE
@@ -72,11 +81,7 @@ class TaskFragment : Fragment() {
             }
 
         // set current date to calendar and current month to currentMonth variable
-        calendar.time = Date()
-        currentMonth = calendar[Calendar.MONTH]
-        binding?.tvDate?.text =
-            "${DateUtils.getMonthName(calendar.time)}, ${DateUtils.getDayNumber(calendar.time)} "
-        binding?.tvDay?.text = DateUtils.getDayName(calendar.time)
+
 
 
 
@@ -97,13 +102,13 @@ class TaskFragment : Fragment() {
                 // will be using basic item view
                 return if (isSelected)
                     when (cal[Calendar.DAY_OF_WEEK]) {
-                        Calendar.MONDAY -> R.layout.first_special_selected_calendar_item
+
                         else -> R.layout.selected_calender_item
                     }
                 else
                 // here we return items which are not selected
                     when (cal[Calendar.DAY_OF_WEEK]) {
-                        Calendar.MONDAY -> R.layout.first_special_calendar_item
+
 
                         else -> R.layout.calender_item
                     }
@@ -139,6 +144,21 @@ class TaskFragment : Fragment() {
                 binding?.tvDate?.text =
                     "${DateUtils.getMonthName(date)}, ${DateUtils.getDayNumber(date)} "
                 binding?.tvDay?.text = DateUtils.getDayName(date)
+                var dates = "${DateUtils.getYear(date)}/${DateUtils.getMonthNumber(date)}/${DateUtils.getDayNumber(date)}"
+
+                mainViewModel.getByDate(dates).observe(viewLifecycleOwner, { listTask ->
+                    if (listTask != null && listTask.size > 0) {
+                        adapter.submitList(listTask)
+                        R.layout.first_special_calendar_item
+                        binding?.viewData?.root?.visibility = View.GONE
+                        binding?.cardRv?.visibility = View.VISIBLE
+                    }else{
+                        binding?.viewData?.root?.visibility = View.VISIBLE
+                        binding?.cardRv?.visibility = View.GONE
+
+                    }
+                })
+
                 super.whenSelectionChanged(isSelected, position, date)
             }
 
@@ -180,13 +200,14 @@ class TaskFragment : Fragment() {
 
     }
      fun showBookmark() {
-         mainViewModel.getAllTask().observe(viewLifecycleOwner, { listTask ->
+         mainViewModel.getByDate(dateNow).observe(viewLifecycleOwner, { listTask ->
              if (listTask != null && listTask.size > 0) {
                  adapter.submitList(listTask)
                  binding?.viewData?.root?.visibility = View.GONE
                  binding?.cardRv?.visibility = View.VISIBLE
 
              }
+
          })
     }
 

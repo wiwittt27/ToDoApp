@@ -138,13 +138,13 @@
         app:layout_constraintTop_toBottomOf="@id/edt_time_end" />
 
     <CheckBox
+        android:id="@+id/cb_complete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/select_task"
         app:layout_constraintStart_toStartOf="@id/select_task"
         app:layout_constraintEnd_toEndOf="@id/select_task"
-
-
+        android:text="Complete"
         />
 
 

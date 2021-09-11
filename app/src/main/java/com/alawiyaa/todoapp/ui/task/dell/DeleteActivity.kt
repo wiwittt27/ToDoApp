@@ -6,6 +6,7 @@ import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,7 @@ import com.alawiyaa.todoapp.R
 import com.alawiyaa.todoapp.data.source.local.entity.Task
 import com.alawiyaa.todoapp.databinding.ActivityDeleteBinding
 import com.alawiyaa.todoapp.ui.task.add.AddTaskViewModel
+import com.alawiyaa.todoapp.util.STATUS_DONE
 import com.alawiyaa.todoapp.viewmodel.ToDoViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,7 +25,7 @@ class DeleteActivity : AppCompatActivity(), View.OnClickListener {
     }
     private var task : Task? = null
     private lateinit var mViewModel: DeleteUpdateViewModel
-
+    var status:Int = 0
     private var _binding : ActivityDeleteBinding? =null
     private val binding get() = _binding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +53,9 @@ class DeleteActivity : AppCompatActivity(), View.OnClickListener {
     private fun getData(task: Task?) {
         binding?.edtTitle?.setText(task?.title)
         binding?.edtDesc?.setText(task?.desc)
+        binding?.edtTimeStart?.setText(task?.startTime)
+        binding?.edtTimeEnd?.setText(task?.endTime)
+        binding?.edtDate?.setText(task?.date)
     }
 
     override fun onClick(v: View?) {
@@ -59,6 +64,11 @@ class DeleteActivity : AppCompatActivity(), View.OnClickListener {
         val startTime =  binding?.edtTimeStart?.text
         val endTime = binding?.edtTimeEnd?.text
         val date = binding?.edtDate?.text
+
+        if (binding?.cbComplete?.isChecked == true){
+            status = STATUS_DONE
+            binding?.cbComplete?.text = "Complete"
+        }
         when(v?.id){
             R.id.update_tasks_btn ->{
                 task.let {
@@ -67,6 +77,7 @@ class DeleteActivity : AppCompatActivity(), View.OnClickListener {
                     task?.startTime = startTime.toString()
                     task?.endTime = endTime.toString()
                     task?.date = date.toString()
+                    task?.status = status
                 }
             mViewModel.updateTask(task as Task)
                 Toast.makeText(this,"Task Diubah", Toast.LENGTH_SHORT).show()
@@ -114,7 +125,7 @@ class DeleteActivity : AppCompatActivity(), View.OnClickListener {
                         calendar[Calendar.YEAR] = year
                         calendar[Calendar.MONTH] = month
                         calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
-                        val simpleDateFormat = SimpleDateFormat("yy-MM-dd", Locale.getDefault())
+                        val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
                         binding?.edtDate?.setText(simpleDateFormat.format(calendar.time))
                     }
                 DatePickerDialog(
